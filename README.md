@@ -7,19 +7,19 @@ Way simple Angular directive to apply mask to input fields also with dynamic/mul
 Mask format uses 0 
 Example: 0000-0000-0000-0000
 
-Directive will look for attribute angular-mask on input
+Directive will look for attribute ng-mask on input
 ## Example: 
 ```HTML
-<input name="test" maxlengh="19" angular-mask="0000-0000-0000-0000" />
+<input name="test" maxlengh="19" ng-mask="0000-0000-0000-0000" />
 ```
 
 ### Multiple masks
 ```HTML
-<input name="test" maxlengh="19" angular-mask="(00)00000-0000|(00)0000-0000" />
+<input name="test" maxlengh="19" ng-mask="(00)00000-0000|(00)0000-0000" />
 ```
 Use | to separate masks
 
 
 #### Install via bower
 
-    bower install angular-input-mask --save
+    fis install angular-input-mask
