@@ -22,7 +22,7 @@ Use | to separate masks , 会优先匹配较短的 mask
 ## filter Example: 
 ```HTML
 {{"111222333"| mask:"000-000-000"}}
-
+```
 #### Install via bower
 
     fis install angular-input-mask
