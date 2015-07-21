@@ -7,7 +7,7 @@
         "angular"
     ],
     "shim": {
-        "angular-cookies.js": {
+        "angular-input-mask.js": {
             "deps": ["angular"],
             "exports": "'ngMask'"
         }
