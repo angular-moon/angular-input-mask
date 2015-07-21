@@ -7,11 +7,12 @@ function mask(val, arrFormat) {
   }
   var format;
   var value = String(val).replace(/\D/g, '');
-  if (arrFormat.length > 1) {
-    format = arrFormat[arrFormat.length-1];
-    for (var a in arrFormat) {
-      if (value.replace(/\D/g, '').length <= (maxlength = arrFormat[a].replace(/\D/g, '').length)) {
-        format = arrFormat[a];
+  var length = arrFormat.length;
+  if (length > 1) {
+    format = arrFormat[length-1];
+    for (var i=0; i<length; i++) {
+      if (value.replace(/\D/g, '').length <= (maxlength = arrFormat[i].replace(/\D/g, '').length)) {
+        format = arrFormat[i];
         break;
       }
     }
