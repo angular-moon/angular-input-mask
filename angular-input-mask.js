@@ -1,11 +1,48 @@
+
+var maxlength = 0;
+
+function mask(val, arrFormat) {
+  if (!val) {
+    return '';
+  }
+  var format;
+  var value = String(val).replace(/\D/g, '');
+  if (arrFormat.length > 1) {
+    format = arrFormat[arrFormat.length-1];
+    for (var a in arrFormat) {
+      if (value.replace(/\D/g, '').length <= (maxlength = arrFormat[a].replace(/\D/g, '').length)) {
+        format = arrFormat[a];
+        break;
+      }
+    }
+  }else{
+    format = arrFormat[0];
+    maxlength = format.replace(/\D/g, '').length;
+  }
+  var newValue = '';
+  for (var nmI = 0, mI = 0; mI < format.length;) {
+    if (!value[nmI]) {
+      break;
+    }
+    if (format[mI].match(/\D/)) {
+      newValue += format[mI];
+    } else {
+      newValue += value[nmI];
+      nmI++;
+    }
+    mI++;
+  }
+  return newValue;
+}
+  
 angular.module('ngMask', [])
   .directive('ngMask', function () {
     return {
       restrict: 'A',
       require: 'ngModel',
-      link: function ($scope, el, attrs, model) {
-        var format = attrs.ngMask,
-          arrFormat = format.split('|');
+      link: function (scope, el, attrs, model) {
+       
+        var arrFormat = attrs.ngMask.split('|');
 
         if (arrFormat.length > 1) {
           arrFormat.sort(function (a, b) {
@@ -14,45 +51,26 @@ angular.module('ngMask', [])
         }
 
         model.$formatters.push(function (value) {
-          return value === null ? '' : mask(String(value).replace(/\D/g, ''));
+          return !value ? '' : mask(String(value).replace(/\D/g, ''), arrFormat);
         });
 
         model.$parsers.push(function (value) {
-          model.$viewValue = mask(value);
-          var modelValue = String(value).replace(/\D/g, '');
+          model.$viewValue = mask(value, arrFormat);
+          var modelValue = String(value).replace(/\D/g, '').slice(0, maxlength);
           el.val(model.$viewValue);
           return modelValue;
         });
-
-        function mask(val) {
-          if (val === null) {
-            return '';
-          }
-          var value = String(val).replace(/\D/g, '');
-          if (arrFormat.length > 1) {
-            for (var a in arrFormat) {
-              if (value.replace(/\D/g, '').length <= arrFormat[a].replace(/\D/g, '').length) {
-                format = arrFormat[a];
-                break;
-              }
-            }
-          }
-          var newValue = '';
-          for (var nmI = 0, mI = 0; mI < format.length;) {
-            if (format[mI].match(/\D/)) {
-              newValue += format[mI];
-            } else {
-              if (value[nmI] != undefined) {
-                newValue += value[nmI];
-                nmI++;
-              } else {
-                break;
-              }
-            }
-            mI++;
-          }
-          return newValue;
-        }
       }
     };
-  });
+  })
+.filter("mask", function(){
+   return function(input, _mask) {
+      var arrFormat = _mask.split('|');
+      if (arrFormat.length > 1) {
+          arrFormat.sort(function (a, b) {
+            return a.length - b.length;
+          });
+        }
+      return mask(input || '', arrFormat);
+  };
+});

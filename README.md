@@ -1,8 +1,8 @@
-# Simple input mask directive for [AngularJS](http://angularjs.org/)
+# Simple input mask directive and filter for [AngularJS](http://angularjs.org/)
 
 ***
 
-Way simple Angular directive to apply mask to input fields also with dynamic/multiple masks to the same field, which means that you can have different masks for different lengths of numbers
+简单的数字输入格式化指令,和格式化显示过滤器
 
 Mask format uses 0 
 Example: 0000-0000-0000-0000
@@ -17,8 +17,11 @@ Directive will look for attribute ng-mask on input
 ```HTML
 <input name="test" maxlengh="19" ng-mask="(00)00000-0000|(00)0000-0000" />
 ```
-Use | to separate masks
+Use | to separate masks , 会优先匹配较短的 mask
 
+## filter Example: 
+```HTML
+{{"111222333"| mask:"000-000-000"}}
 
 #### Install via bower
 
